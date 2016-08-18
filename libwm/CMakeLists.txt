@@ -14,6 +14,7 @@ target_include_directories(
 )
 
 target_link_libraries(wm wlc)
+target_link_libraries(wm boost-log boost-system)
 
 install(TARGETS wm
     ARCHIVE  DESTINATION lib

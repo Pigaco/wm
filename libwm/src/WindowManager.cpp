@@ -2,7 +2,10 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <fstream>
 #include <wlc/wlc.h>
+
+#include <piga/daemon/Daemon.hpp>
 
 namespace piga
 {
@@ -15,6 +18,9 @@ static bool view_created(wlc_handle view)
     wlc_view_set_mask(view, wlc_output_get_mask(wlc_view_get_output(view)));
     wlc_view_bring_to_front(view);
     wlc_view_focus(view);
+
+    std::cout << "Set the view to fullscreen!" << std::endl;
+    wlc_view_set_state(view, WLC_BIT_FULLSCREEN, true);
     return true;
 }
 
@@ -56,6 +62,11 @@ static bool keyboard_input(wlc_handle view, uint32_t time, const struct wlc_modi
     }
     return false;
 }
+static void cb_compositor_ready()
+{
+    std::cout << "Compositor is ready!" << std::endl;
+    WindowManager::signalDaemon();
+}
 
 static void cb_log(enum wlc_log_type type, const char *str)
 {
@@ -79,6 +90,7 @@ int WindowManager::init()
     wlc_set_view_created_cb(view_created);
     wlc_set_view_focus_cb(view_focus);
     wlc_set_keyboard_key_cb(keyboard_input);
+    wlc_set_compositor_ready_cb(cb_compositor_ready);
 
     wlc_log_set_handler(cb_log);
     
@@ -95,6 +107,21 @@ int WindowManager::run()
 void WindowManager::stop()
 {
     wlc_terminate();
+}
+void WindowManager::signalDaemon()
+{
+    pid_t daemonPid = 0;
+    std::ifstream pidfile(daemon::Daemon::getPidfilePath());
+    if(pidfile.is_open()) {
+		pidfile >> daemonPid;
+		pidfile.close();
+        
+        // Send signal to daemon to continue processing the apps.
+        kill(daemonPid, SIGUSR1);
+        std::cout << "Sent signal." << std::endl;
+    } else {
+        std::cout << "Daemon not running, not sending signal. Pidfile: \"" << daemon::Daemon::getPidfilePath() << "\"" << std::endl;
+    }
 }
 }
 }

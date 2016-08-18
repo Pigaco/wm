@@ -21,6 +21,7 @@ public:
     int run();
 
     static void stop();
+    static void signalDaemon();
 private:
 	bool m_started = false;
 };
