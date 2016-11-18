@@ -34,12 +34,12 @@ add_library(boost-log SHARED IMPORTED)
 set_property(TARGET boost-log PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${Boost_INCLUDE_DIRS})
 set_property(TARGET boost-log PROPERTY IMPORTED_LOCATION ${Boost_LOG_LIBRARY})
 
-find_package(Wlc REQUIRED)
-add_library(wlc SHARED IMPORTED)
-set_property(TARGET wlc PROPERTY INTERFACE_INCLUDE_DIRECTORIES ${WLC_INCLUDE_DIRS})
-set_property(TARGET wlc PROPERTY IMPORTED_LOCATION ${WLC_LIBRARIES})
-
 find_package(PigaDaemon REQUIRED)
+
+# Add wlc 
+set(WLC_BUILD_STATIC ON)
+add_subdirectory(wlc)
+export(TARGETS wlc APPEND FILE PigaWMConfig.cmake)
 
 add_subdirectory(libwm)
 add_subdirectory(bin)
