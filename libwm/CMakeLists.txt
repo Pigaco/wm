@@ -19,6 +19,9 @@ install(TARGETS wm
     ARCHIVE  DESTINATION lib
     LIBRARY  DESTINATION lib
     RUNTIME  DESTINATION bin)  # This is for Windows
-install(DIRECTORY include/ DESTINATION include)
+install(DIRECTORY include/ 
+    DESTINATION include
+    PATTERN *.hpp
+)
 
 export(TARGETS wm FILE PigaWMConfig.cmake)
