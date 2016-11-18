@@ -8,7 +8,7 @@ int main(int argc, char *argv[])
     WindowManager wm;
 
     int status = 0;
-
+    
     status = wm.init();
 
     if(status != EXIT_SUCCESS)

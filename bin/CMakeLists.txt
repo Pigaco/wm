@@ -3,6 +3,8 @@ add_executable(
     ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
 )
 
+set_property(TARGET pigawm PROPERTY COMPILE_FLAGS "-std=c++11")
+
 target_link_libraries(pigawm
     wm 
     boost

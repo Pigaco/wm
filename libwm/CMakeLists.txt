@@ -4,8 +4,7 @@ add_library(
     ${CMAKE_CURRENT_SOURCE_DIR}/src/WindowManager.cpp
 )
 
-target_compile_features(wm PRIVATE cxx_raw_string_literals)
-target_compile_features(wm PRIVATE cxx_nullptr)
+set_property(TARGET wm PROPERTY COMPILE_FLAGS "-std=c++11")
 
 target_include_directories(
     wm PUBLIC
