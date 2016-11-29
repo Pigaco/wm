@@ -44,6 +44,8 @@ export(TARGETS wlc APPEND FILE PigaWMConfig.cmake)
 add_subdirectory(libwm)
 add_subdirectory(bin)
 
+target_include_directories(wm PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/wlc/include/)
+
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Managing the game windows.")
 set(CPACK_PACKAGE_VENDOR "Pigaco")
 set(CPACK_PACKAGE_VERSION_MAJOR ${PIGAWM_VERSION_MAJOR})
